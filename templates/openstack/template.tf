@@ -1,24 +1,18 @@
 variable "subnet_size" {}
-variable "network_name" {}
-variable "subnet_name" {}
-variable "router_name" {}
 variable "gateway_id" {}
 
 resource "openstack_networking_network_v2" "main" {
-  name = "${var.network_name}"
   admin_state_up = "true"
 }
 
 resource "openstack_networking_subnet_v2" "main" {
   count = "${var.subnet_size}"
-  name = "${var.subnet_name}_${count.index}"
   network_id = "${openstack_networking_network_v2.main.id}"
   cidr = "10.0.${count.index + 1}.0/24"
   ip_version = 4
 }
 
 resource "openstack_networking_router_v2" "main" {
-  name = "${var.router_name}"
   admin_state_up = "true"
   external_gateway = "${var.gateway_id}"
 }
