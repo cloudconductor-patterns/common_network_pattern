@@ -58,8 +58,8 @@ resource "openstack_compute_secgroup_v2" "shared_security_group" {
   }
 }
 
-output "network_id" {
-  value = "${openstack_networking_network_v2.main.id}"
+output "subnet_ids" {
+  value = "${join(", ", openstack_networking_subnet_v2.main.*.id)}"
 }
 
 output "shared_security_group" {
