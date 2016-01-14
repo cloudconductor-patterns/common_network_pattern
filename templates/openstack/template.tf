@@ -1,5 +1,10 @@
-variable "subnet_size" {}
-variable "gateway_id" {}
+variable "subnet_size" {
+  description = "Size of subnet"
+  default = 1
+}
+variable "gateway_id" {
+  description = "Gateway ID to reach internet on Openstack"
+}
 
 resource "openstack_networking_network_v2" "main" {
   admin_state_up = "true"
