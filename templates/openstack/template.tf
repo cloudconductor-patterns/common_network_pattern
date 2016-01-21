@@ -7,7 +7,7 @@ variable "gateway_id" {
 }
 
 resource "openstack_networking_network_v2" "main" {
-  admin_state_up = "true"
+  admin_state_up = true
 }
 
 resource "openstack_networking_subnet_v2" "main" {
@@ -18,7 +18,7 @@ resource "openstack_networking_subnet_v2" "main" {
 }
 
 resource "openstack_networking_router_v2" "main" {
-  admin_state_up = "true"
+  admin_state_up = true
   external_gateway = "${var.gateway_id}"
 }
 
