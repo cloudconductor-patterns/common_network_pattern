@@ -17,3 +17,5 @@ providers:
     openstack:
       - cloud_formation
       - terraform
+    wakame-vdc:
+      - terraform
