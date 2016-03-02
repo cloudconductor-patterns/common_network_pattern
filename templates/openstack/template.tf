@@ -1,7 +1,3 @@
-variable "subnet_size" {
-  description = "Size of subnet"
-  default = 1
-}
 variable "gateway_id" {
   description = "Gateway ID to reach internet on Openstack"
 }
@@ -11,9 +7,8 @@ resource "openstack_networking_network_v2" "main" {
 }
 
 resource "openstack_networking_subnet_v2" "main" {
-  count = "${var.subnet_size}"
   network_id = "${openstack_networking_network_v2.main.id}"
-  cidr = "10.0.${count.index + 1}.0/24"
+  cidr = "10.0.1.0/24"
   ip_version = 4
 }
 
@@ -23,9 +18,8 @@ resource "openstack_networking_router_v2" "main" {
 }
 
 resource "openstack_networking_router_interface_v2" "main" {
-  count = "${var.subnet_size}"
   router_id = "${openstack_networking_router_v2.main.id}"
-  subnet_id = "${element(openstack_networking_subnet_v2.main.*.id,count.index)}"
+  subnet_id = "${openstack_networking_subnet_v2.main.id}"
 }
 
 resource "openstack_compute_secgroup_v2" "shared_security_group" {
@@ -58,7 +52,7 @@ resource "openstack_compute_secgroup_v2" "shared_security_group" {
 }
 
 output "subnet_ids" {
-  value = "${join(", ", openstack_networking_subnet_v2.main.*.id)}"
+  value = "${openstack_networking_network_v2.main.id}"
 }
 
 output "shared_security_group" {
