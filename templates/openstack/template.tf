@@ -1,4 +1,5 @@
 variable "gateway_id" {
+  name = "common"
   description = "Gateway ID to reach internet on Openstack"
 }
 
