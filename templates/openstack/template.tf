@@ -4,6 +4,7 @@ variable "gateway_id" {
 }
 
 resource "openstack_networking_network_v2" "main" {
+  name = "common_network"
   admin_state_up = true
 }
 
