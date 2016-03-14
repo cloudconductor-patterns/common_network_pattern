@@ -58,5 +58,5 @@ output "subnet_ids" {
 }
 
 output "shared_security_group" {
-  value = "${openstack_compute_secgroup_v2.shared_security_group.id}"
+  value = "${openstack_compute_secgroup_v2.shared_security_group.name}"
 }
