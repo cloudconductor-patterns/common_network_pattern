@@ -3,7 +3,7 @@ variable "subnet_size" {
   default = 1
 }
 variable "availability_zones" {
-  description = "Usable availability zones as comma separated list"
+  description = "Usable availability zones as comma separated list (note: separate each element by comma WITH SPACE like \"us-east-1a, us-east-1b\")"
 }
 
 resource "aws_vpc" "main" {
