@@ -3,6 +3,10 @@ variable "gateway_id" {
   description = "Gateway ID to reach internet on Openstack"
 }
 
+variable "environment_id" {
+  description = "[computed] Environment Id to avoid duplicate on Security group. This parameter is automatically filled by CloudConductor."
+}
+
 resource "openstack_networking_network_v2" "main" {
   name = "common_network"
   admin_state_up = true
@@ -25,7 +29,7 @@ resource "openstack_networking_router_interface_v2" "main" {
 }
 
 resource "openstack_compute_secgroup_v2" "shared_security_group" {
-  name = "SharedSecurityGroup"
+  name = "SharedSecurityGroup${var.environment_id}"
   description = "Shared security group over all instances in platform/optional pattern"
   rule {
     from_port = 22
