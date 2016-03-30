@@ -1,5 +1,10 @@
-variable "subnet_size" {}
-variable "availability_zones" {}
+variable "subnet_size" {
+  description = "Size of subnet"
+  default = 1
+}
+variable "availability_zones" {
+  description = "Usable availability zones as comma separated list (note: separate each element by comma WITH SPACE like \"us-east-1a, us-east-1b\")"
+}
 
 resource "aws_vpc" "main" {
   cidr_block = "10.0.0.0/16"

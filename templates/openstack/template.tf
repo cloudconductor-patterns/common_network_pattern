@@ -1,36 +1,35 @@
-variable "subnet_size" {}
-variable "network_name" {}
-variable "subnet_name" {}
-variable "router_name" {}
-variable "gateway_id" {}
+variable "gateway_id" {
+  name = "common"
+  description = "Gateway ID to reach internet on Openstack"
+}
+
+variable "environment_id" {
+  description = "[computed] Environment Id to avoid duplicate on Security group. This parameter is automatically filled by CloudConductor."
+}
 
 resource "openstack_networking_network_v2" "main" {
-  name = "${var.network_name}"
-  admin_state_up = "true"
+  name = "common_network"
+  admin_state_up = true
 }
 
 resource "openstack_networking_subnet_v2" "main" {
-  count = "${var.subnet_size}"
-  name = "${var.subnet_name}_${count.index}"
   network_id = "${openstack_networking_network_v2.main.id}"
-  cidr = "10.0.${count.index + 1}.0/24"
+  cidr = "10.0.1.0/24"
   ip_version = 4
 }
 
 resource "openstack_networking_router_v2" "main" {
-  name = "${var.router_name}"
-  admin_state_up = "true"
+  admin_state_up = true
   external_gateway = "${var.gateway_id}"
 }
 
 resource "openstack_networking_router_interface_v2" "main" {
-  count = "${var.subnet_size}"
   router_id = "${openstack_networking_router_v2.main.id}"
-  subnet_id = "${element(openstack_networking_subnet_v2.main.*.id,count.index)}"
+  subnet_id = "${openstack_networking_subnet_v2.main.id}"
 }
 
 resource "openstack_compute_secgroup_v2" "shared_security_group" {
-  name = "SharedSecurityGroup"
+  name = "SharedSecurityGroup${var.environment_id}"
   description = "Shared security group over all instances in platform/optional pattern"
   rule {
     from_port = 22
@@ -58,10 +57,14 @@ resource "openstack_compute_secgroup_v2" "shared_security_group" {
   }
 }
 
-output "network_id" {
+output "subnet_ids" {
   value = "${openstack_networking_network_v2.main.id}"
 }
 
 output "shared_security_group" {
   value = "${openstack_compute_secgroup_v2.shared_security_group.id}"
+}
+
+output "shared_security_group_name" {
+  value = "${openstack_compute_secgroup_v2.shared_security_group.name}"
 }
