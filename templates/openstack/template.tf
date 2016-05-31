@@ -1,5 +1,6 @@
 variable "gateway_id" {
   name = "common"
+  default = "auto"
   description = "Gateway ID to reach internet on Openstack"
 }
 
