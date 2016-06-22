@@ -1,7 +1,7 @@
 variable "gateway_id" {
   name = "common"
   default = "auto"
-  description = "Gateway ID to reach internet on Openstack"
+  description = "Gateway ID to reach internet on Openstack(if provide 'auto', decide external gateway automatically)"
 }
 
 variable "environment_id" {
